@@ -1,0 +1,35 @@
+﻿@model SimpleExpense
+
+@{
+    ViewData["Title"] = "Remove expense";
+}
+
+<h1>Expenses</h1>
+
+<h5>Remove</h5>
+
+<partial name="_ShowAlertMessage"/>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="POST" asp-action="RemoveConfirm">
+            <input type="hidden" asp-for="Id" />
+            <dl>
+                <dt>Name</dt>
+                <dd>@Model.Name</dd>
+
+                <dt>Amount</dt>
+                <dd>@Model.Amount</dd>
+
+                <dt>Category</dt>
+                <dd>@Model.Category</dd>
+
+                <dt>Posted date</dt>
+                <dd>@Model.PostedAt</dd>
+            </dl>
+
+            <p>Are you sure you wish to remove this expense?</p>
+            <button type="submit" class="btn btn-danger">Remvoe</button>
+        </form>
+    </div>
+</div>

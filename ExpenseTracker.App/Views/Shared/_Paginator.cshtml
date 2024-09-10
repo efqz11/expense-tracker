@@ -1,0 +1,60 @@
+﻿@model ExpenseTracker.App.Interfaces.Models.IPaginatedResponse;
+@{
+    int maxVisiblePages = 5;
+    List<int> result = new List<int>();
+    if (Model.PageCount <= maxVisiblePages) {
+        for (var i = 1; i <= Model.PageCount; i++) {
+            result.Add(i);
+        }
+    } else if (Model.CurrentPage <= maxVisiblePages - 1) {
+        for (var i = 1; i <= maxVisiblePages; i++) {
+            result.Add(i);
+        }
+        if (Model.PageCount > maxVisiblePages) {
+            result.Add(-1);
+            result.Add(Model.PageCount);
+        }
+    } else if (Model.CurrentPage >= Model.PageCount - maxVisiblePages) {
+        if (Model.PageCount > maxVisiblePages) {
+            result.Add(1);
+            result.Add(-1);
+        }
+        for (var i = Model.PageCount - (maxVisiblePages - 1); i <= Model.PageCount; i++) {
+            result.Add(i);
+        }
+    } else {
+        result.Add(1);
+        result.Add(-2);
+        for (var i = Model.CurrentPage - 1; i <= Model.CurrentPage + 1; i++) {
+            result.Add(i);
+        }
+        result.Add(-2);
+        result.Add(Model.PageCount);
+    }
+}
+
+<nav aria-label="Page navigation example" class="my-5">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" asp-route-page="@Model.PreviousPage" asp-route-search="@ViewBag.Search" asp-route-orderstatus="@ViewBag.OrderStatus" asp-route-isongoing="@ViewBag.IsOngoing" asp-route-start="@ViewBag.Start" asp-route-end="@ViewBag.End" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        @foreach(var item in result)
+        {
+            @if (item > 0)
+            {
+                <li class="page-item @(item == Model.CurrentPage ? "disabled" : "")">
+                    <a class="page-link" asp-route-page="@item"  asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.CategoryId" asp-route-start="@ViewBag.Start" asp-route-end="@ViewBag.End" tabindex="-1">@item</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link disabled" tabindex="-1">&middot;&middot;&middot;</a>
+                </li>
+            }
+        }
+        <li class="page-item @(Model.CurrentPage == Model.PageCount ? "disabled" : "")">
+            <a class="page-link" asp-route-page="@Model.NextPage" asp-route-search="@ViewBag.Search" asp-route-orderstatus="@ViewBag.OrderStatus" asp-route-isongoing="@ViewBag.IsOngoing" asp-route-start="@ViewBag.Start" asp-route-end="@ViewBag.End" >Next</a>
+        </li>
+    </ul>
+</nav>

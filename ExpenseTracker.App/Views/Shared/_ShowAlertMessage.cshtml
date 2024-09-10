@@ -1,0 +1,20 @@
+﻿
+@{
+	TempData["Title"] = "Change employee details";
+	var icon = TempData["alert.type"]?.ToString() == "success" ? "fa-check-circle" :
+	TempData["alert.type"]?.ToString() == "danger" ? "fa-exclamation-circle" :
+	TempData["alert.type"]?.ToString() == "warning" ? "fa-exclamation-triangle" : "fa-info-circle";
+	var hasAlert = TempData["alert"] != null || TempData["alert"] != null;
+	var textX = "text-"+TempData["alert.type"];
+	if (textX == "text-info")
+		textX = "text-secondary";
+}
+@if (hasAlert)
+{
+    <div class="alert alert-@(TempData["alert.type"]) alert-dismissible @*fade*@ show" role="alert">
+        <i class="fad @icon @textX"></i>
+        @(TempData["alert.message"] ?? TempData["alert.message"])
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+

@@ -1,0 +1,86 @@
+﻿@model PaginatedResponse<SimpleExpense>
+
+@{
+    ViewData["Title"] = "Manage your expenses";
+    ExpenseSearchRequest request = (ExpenseSearchRequest)ViewBag.ExpenseSearchRequest;
+}
+
+
+<div class="d-flex mb-2 align-items-center gap-3">
+    <h1>Expenses</h1>
+    <a asp-action="Create" class="btn btn-primary">Create new</a>
+</div>
+
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search by expense name" aria-label="Search by expense name" aria-describedby="basic-addon2" name="Search" value="@request.Search">
+                <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+            </div>
+        </div>
+        <div class="col">
+            <select class="form-select" name="CategoryId" asp-items="ViewBag.CategoryDropdown">
+                <option value="">All Categories</option>
+            </select>
+        </div>
+        <div class="col">
+            @* <input class="form-control fcdt" name="Start" type="text" placeholder="dd/MM/yyyy"  value="@(request.Start?.ToString("MM/dd/yyy"))"> *@
+            <input class="form-control fcdt" name="Start" type="date" value="@(request.Start?.ToString("yyyy-MM-dd"))">
+        </div>
+        <div class="col">
+            <input class="form-control fcdt" name="End" type="date" value="@(request.End?.ToString("yyyy-MM-dd"))">
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<partial name="_ShowAlertMessage"/>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.Results)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Amount</td>
+                <td>@item.Category</td>
+                <td>@item.PostedAt</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-sm btn-outline-secondary"><i class="fa fa-edit"></i></a>
+                    <a asp-action="Remove" asp-route-id="@item.Id" class="btn-sm btn-outline-danger"><i class="fa fa-trash-alt"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="py-4">
+    <partial name="_Paginator"></partial>
+</div>
+
+@* <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".fcdt").datepicker({
+                dateFormat: "dd/mm/yy" // Enforces dd/MM/yyyy format
+            });
+        });
+    </script>
+} *@

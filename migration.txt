@@ -1,0 +1,28 @@
+
+
+cd ./ExpenseTracker.Data
+
+-- create migrations
+dotnet ef migrations add nameIsOptional -o ./Migrations --startup-project ../ExpenseTracker.App
+
+-- list migrations
+dotnet ef migrations list --startup-project ../ExpenseTracker.App
+dotnet ef migrations remove --startup-project ../ExpenseTracker.App
+
+-- run update against database
+dotnet ef database update --startup-project ../ExpenseTracker.App
+
+-- Create migration sql script
+dotnet ef migrations script InitialCreate AddAuthIdentity -o ../Sql/InitialCreate_AddAuthIdentity.sql --startup-project ../ExpenseTracker.App
+
+-- start docker postgress database
+docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mypass -e POSTGRES_USER=root -d postgres
+
+
+###
+
+-- rollback
+dotnet ef database update addActionMessageProperty --startup-project ../ExpenseTracker.App
+
+-- removed
+dotnet ef migrations remove --startup-project ../ExpenseTracker.App
