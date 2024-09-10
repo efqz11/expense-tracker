@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace ExpenseTracker.App.Models.Extentions
 {
-    public static class LoadingScreenDbSetExtentions
+    public static class ExpenseDbSetExtentions
 	{
         public static async Task<Expense> GetWithDepsAsync(this DbSet<Expense> dbSet, Expression<Func<Expense, bool>> predicate)
         {

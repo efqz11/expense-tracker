@@ -68,9 +68,9 @@ namespace ExpenseTracker.App.Services.Builders
 
 		public Expense GetValidExpense(ExpenseUpdateRequest request)
 		{
-            Dto.PostedAt ??= DateTime.Now;
-
 			Mapper.Map(request, Dto);
+
+            Dto.PostedAt ??= DateTime.Now;
 
             Expense.Name = Dto.Name;
             Expense.Amount = Dto.Amount;
@@ -87,11 +87,18 @@ namespace ExpenseTracker.App.Services.Builders
 
         private void Validate()
 		{
+            var dd = Context.Categories.ToList();
+
             Category? category = Context.Categories.Find(Dto.CategoryId);
 
             if (category == null)
             {
                 throw new ApplicationException("Category was not found");
+            }
+
+            if (Dto.Amount <= 0)
+            {
+                throw new ApplicationException("Invalid data type for value amount");
             }
 
             // check other validations

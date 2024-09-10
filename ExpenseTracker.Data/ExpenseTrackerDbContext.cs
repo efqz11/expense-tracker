@@ -27,6 +27,11 @@ namespace ExpenseTracker.Data
 
         public void NotifyObservers<TEntity>(TEntity newEntity, TEntity oldEntityObject, EntityState state)
         {
+            if (_serviceProvider == null)
+            {
+                return;
+            }
+
             using (var scope = _serviceProvider.CreateScope())
             {
                 var observers = scope.ServiceProvider.GetServices<IEntityObserver>();

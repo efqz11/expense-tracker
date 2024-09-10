@@ -1,0 +1,43 @@
+﻿@model StatisticsResponse
+
+@{
+    ViewData["Title"] = "Statistics of your expenses";
+}
+
+
+<div class="d-flex mb-2 align-items-center gap-3">
+    <h1>Statistics</h1>
+</div>
+
+<div class="row mb-4">
+    <div class="col text-end">
+        <a class="btn btn-outline-dark" asp-route-date="@Model.Previous"><i class="fa fa-arrow-left"></i> @Model.Previous.ToString("MMMM, yyyy")</a>
+    </div>
+    <div class="col text-center">
+        <h3>@Model.CurrentMonth.ToString("MMMM, yyyy")</h3>
+    </div>
+    <div class="col-4">
+        <a class="btn btn-outline-dark" asp-route-date="@Model.Next">@Model.Next.ToString("MMMM, yyyy") <i class="fa fa-arrow-right"></i></a>
+    </div>
+</div>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Record Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.Data)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value[0].ToString("N2")</td>
+                <td>@item.Value[1].ToString("N0")</td>
+            </tr>
+        }
+    </tbody>
+</table>

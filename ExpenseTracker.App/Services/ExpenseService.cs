@@ -108,7 +108,7 @@ namespace ExpenseTracker.App.Interfaces.Services
 
                 AppUser user = PermissionService.AppUser;
 
-                SetScreenDto(user, type);
+                SetExpenseDto(user, type);
 
                 Expense expense = _expenseBuilder.CreateValidExpense(expenseRequest);
 
@@ -152,7 +152,7 @@ namespace ExpenseTracker.App.Interfaces.Services
 					throw new ApplicationException("No authorization for this user");
 				}
 
-                SetScreenDto(user, MainActionType.Update, existingExpense);
+                SetExpenseDto(user, MainActionType.Update, existingExpense);
 
                 existingExpense = _expenseBuilder.GetValidExpense(screenRequest);
 
@@ -227,13 +227,14 @@ namespace ExpenseTracker.App.Interfaces.Services
             {
                 Logger.LogError(ex.Message);
 
-                throw new Exception("Failed to process your request at this time");
+                throw ex;
+                // throw new Exception("Failed to process your request at this time");
             }
 
             throw new Exception(ex.Message);
         }
 
-        private ExpenseDto SetScreenDto(AppUser appUser, MainActionType type, Expense? expense = null)
+        private ExpenseDto SetExpenseDto(AppUser appUser, MainActionType type, Expense? expense = null)
         {
             _expenseBuilder.Dto = new ExpenseDto()
             {
